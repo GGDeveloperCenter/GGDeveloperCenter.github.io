@@ -28,10 +28,153 @@
             padding: 20px;
         }
         
+        /* 二维码容器 */
+        .qr-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            max-width: 320px;
+        }
+        
+        /* 微信二维码区域 */
+        .wechat-qr {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #eaeaea;
+            width: 100%;
+        }
+        
+        .wechat-qr:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .qr-code {
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 15px;
+            border: 1px solid #eee;
+            flex-shrink: 0;
+            background: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .qr-text {
+            flex-grow: 1;
+        }
+        
+        .qr-text h3 {
+            color: #2c3e50;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .qr-text p {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .qr-text .highlight {
+            color: #07c160;
+            font-weight: 600;
+        }
+        
+        .qr-close {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            padding: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .qr-close:hover {
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
+        
+        /* 显示二维码按钮 - 更小尺寸，放在二维码区域相同位置 */
+        .show-qr-btn {
+            display: none;
+            align-items: center;
+            background: #07c160;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(7, 193, 96, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 101;
+        }
+        
+        .show-qr-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(7, 193, 96, 0.4);
+            background: #05a050;
+        }
+        
+        .show-qr-btn i {
+            margin-right: 6px;
+            font-size: 1rem;
+        }
+        
+        /* 调整主题切换按钮位置，避免重叠 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 101;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+            background: #3498db;
+        }
+        
         header {
             text-align: center;
             margin-bottom: 40px;
             padding: 20px;
+            margin-top: 30px; /* 为二维码区域留出空间 */
         }
         
         h1 {
@@ -98,12 +241,18 @@
             background: linear-gradient(to right, #3498db, #2ecc71);
         }
         
-        .account-name {
+        .account-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 22px;
             padding-bottom: 15px;
             border-bottom: 1px solid #eee;
+        }
+        
+        .account-name {
+            display: flex;
+            align-items: center;
         }
         
         .account-name i {
@@ -118,6 +267,92 @@
         .account-name h2 {
             color: #2c3e50;
             font-size: 1.6rem;
+        }
+        
+        /* 修改：统计信息和价格信息并列一排 */
+        .account-meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .account-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #f9f9f9;
+            min-width: 70px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+        
+        .stat-published .stat-number {
+            color: #2ecc71;
+        }
+        
+        .stat-rejected .stat-number {
+            color: #e74c3c;
+        }
+        
+        .stat-removed .stat-number {
+            color: #f39c12;
+        }
+        
+        /* 修改价格信息样式 - 与统计信息并列 */
+        .price-tag {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 12px rgba(255, 126, 95, 0.2);
+            transition: all 0.3s ease;
+            min-width: 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .price-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(255, 126, 95, 0.3);
+        }
+        
+        .price-tag:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .price-tag:hover:before {
+            left: 100%;
         }
         
         .account-links {
@@ -224,6 +459,42 @@
         }
         
         /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .qr-container {
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .account-stats {
+                gap: 12px;
+            }
+            
+            .stat-item {
+                min-width: 65px;
+                padding: 6px 10px;
+            }
+            
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            
+            .qr-container {
+                max-width: 280px;
+            }
+            
+            .qr-code {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .price-tag {
+                padding: 8px 16px;
+                font-size: 1.3rem;
+                min-width: 90px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .account-list {
                 gap: 20px;
@@ -237,8 +508,32 @@
                 padding: 22px;
             }
             
+            .account-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .account-meta {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 15px;
+                flex-wrap: wrap;
+            }
+            
             .account-name h2 {
                 font-size: 1.4rem;
+            }
+            
+            .account-stats {
+                width: 100%;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
+            
+            .price-tag {
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
             }
             
             .link-item {
@@ -261,6 +556,28 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            /* 移动端调整二维码容器 */
+            .qr-container {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 0 auto 30px auto;
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            header {
+                margin-top: 10px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -278,6 +595,54 @@
             
             h1 {
                 font-size: 1.7rem;
+            }
+            
+            .stat-item {
+                min-width: 55px;
+                padding: 5px 8px;
+            }
+            
+            .stat-number {
+                font-size: 1.1rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .wechat-qr {
+                padding: 10px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .qr-code {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .qr-text h3 {
+                font-size: 1.1rem;
+            }
+            
+            .qr-text p {
+                font-size: 0.9rem;
+            }
+            
+            .price-tag {
+                font-size: 1.2rem;
+                padding: 8px 12px;
+            }
+            
+            .account-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .account-stats {
+                margin-bottom: 0;
             }
         }
         
@@ -297,32 +662,6 @@
         .account-card:nth-child(3) { animation-delay: 0.3s; }
         .account-card:nth-child(4) { animation-delay: 0.4s; }
         
-        /* 暗色主题切换按钮 */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #2c3e50;
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-        
-        .theme-toggle:hover {
-            transform: rotate(30deg);
-            background: #3498db;
-        }
-        
         /* 暗色主题 */
         body.dark-theme {
             background: #1a1d28;
@@ -339,7 +678,7 @@
             color: #e0e0e0;
         }
         
-        body.dark-theme .account-name {
+        body.dark-theme .account-header {
             border-bottom-color: #3a3f50;
         }
         
@@ -384,25 +723,210 @@
         body.dark-theme .direct-link-btn:hover {
             background: #219653;
         }
+        
+        /* 暗色主题下的统计信息 */
+        body.dark-theme .stat-item {
+            background: #3a3f50;
+        }
+        
+        body.dark-theme .stat-label {
+            color: #aaa;
+        }
+        
+        /* 暗色主题下的微信二维码区域 */
+        body.dark-theme .wechat-qr {
+            background: #2a2e3e;
+            border-color: #3a3f50;
+        }
+        
+        body.dark-theme .qr-code {
+            background: #3a3f50;
+            border-color: #4a4f60;
+        }
+        
+        body.dark-theme .qr-text h3 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .qr-text p {
+            color: #aaa;
+        }
+        
+        /* 暗色主题下的显示二维码按钮 */
+        body.dark-theme .show-qr-btn {
+            background: #07c160;
+            box-shadow: 0 4px 12px rgba(7, 193, 96, 0.3);
+        }
+        
+        body.dark-theme .show-qr-btn:hover {
+            background: #05a050;
+        }
+        
+        /* 暗色主题下的价格信息 */
+        body.dark-theme .price-tag {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+            box-shadow: 0 4px 12px rgba(211, 84, 0, 0.2);
+        }
+        
+        /* 二维码放大效果 */
+        .qr-code-container {
+            position: relative;
+        }
+        
+        .qr-code:hover {
+            cursor: pointer;
+        }
+        
+        .qr-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeInPopup 0.3s ease;
+        }
+        
+        @keyframes fadeInPopup {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .qr-popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 300px;
+            animation: scaleIn 0.3s ease;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+        
+        .qr-popup-img {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+        
+        .qr-popup-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .qr-popup-text {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .qr-popup-close {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .qr-popup-close:hover {
+            background: #2980b9;
+        }
+        
+        body.dark-theme .qr-popup-content {
+            background: #2a2e3e;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .qr-popup-text {
+            color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
+    <!-- 二维码容器 -->
+    <div class="qr-container">
+        <!-- 微信二维码区域 -->
+        <div class="wechat-qr" id="wechatQR">
+            <div class="qr-code" id="qrCode">
+                <!-- 使用提供的二维码图片链接 -->
+                <img src="https://ggdevelopercenter.github.io/qr_wechat.png" alt="微信二维码">
+            </div>
+            <div class="qr-text">
+                <h3>联系销售，享专属优惠！</h3>
+                <p>扫描二维码添加微信，获取<span class="highlight">专属优惠</span>和咨询服务</p>
+            </div>
+            <button class="qr-close" id="qrClose" title="隐藏二维码">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- 显示二维码按钮 - 更小尺寸，放在二维码区域相同位置 -->
+        <button class="show-qr-btn" id="showQRBtn">
+            <i class="fab fa-weixin"></i> 显示二维码
+        </button>
+    </div>
+    
+    <!-- 二维码放大弹出层 -->
+    <div class="qr-popup" id="qrPopup">
+        <div class="qr-popup-content">
+            <div class="qr-popup-img">
+                <!-- 使用相同的二维码图片 -->
+                <img src="https://ggdevelopercenter.github.io/qr_wechat.png" alt="微信二维码">
+            </div>
+            <p class="qr-popup-text">使用微信扫一扫添加好友<br>获取专属优惠和服务</p>
+            <button class="qr-popup-close" id="qrPopupClose">关闭</button>
+        </div>
+    </div>
+    
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
     
     <div class="container">
         <header>
-            <h1>GGDeveloperCenter</h1>
+            <h1>账号信息中心</h1>
         </header>
         
         <!-- 修改为单列布局 -->
         <div class="account-list">
             <!-- 账号1 -->
             <div class="account-card">
-                <div class="account-name">
-                    <i class="fas fa-user-circle"></i>
-                    <h2>VexelAegis77</h2>
+                <div class="account-header">
+                    <div class="account-name">
+                        <i class="fas fa-user-circle"></i>
+                        <h2>VexelAegis77</h2>
+                    </div>
+                    <div class="account-meta">
+                        <div class="account-stats">
+                            <div class="stat-item stat-published">
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">已发布</span>
+                            </div>
+                            <div class="stat-item stat-rejected">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">被拒</span>
+                            </div>
+                            <div class="stat-item stat-removed">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">移除</span>
+                            </div>
+                        </div>
+                        <div class="price-tag">￥8000</div>
+                    </div>
                 </div>
                 <div class="account-links">
                     <div class="link-item">
@@ -442,11 +966,30 @@
                 </div>
             </div>
             
-         <!-- 账号2 -->
+            <!-- 账号2 -->
             <div class="account-card">
-                <div class="account-name">
-                    <i class="fas fa-user-circle"></i>
-                    <h2>PsybilSyndicate</h2>
+                <div class="account-header">
+                    <div class="account-name">
+                        <i class="fas fa-user-circle"></i>
+                        <h2>PsybilSyndicate</h2>
+                    </div>
+                    <div class="account-meta">
+                        <div class="account-stats">
+                            <div class="stat-item stat-published">
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">已发布</span>
+                            </div>
+                            <div class="stat-item stat-rejected">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">被拒</span>
+                            </div>
+                            <div class="stat-item stat-removed">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">移除</span>
+                            </div>
+                        </div>
+                        <div class="price-tag">￥8000</div>
+                    </div>
                 </div>
                 <div class="account-links">
                     <div class="link-item">
@@ -485,13 +1028,31 @@
                     </div>
                 </div>
             </div>
-        </div>
-		
-		<!-- 账号3 -->
+            
+            <!-- 账号3 -->
             <div class="account-card">
-                <div class="account-name">
-                    <i class="fas fa-user-circle"></i>
-                    <h2>KymaForge</h2>
+                <div class="account-header">
+                    <div class="account-name">
+                        <i class="fas fa-user-circle"></i>
+                        <h2>KymaForge</h2>
+                    </div>
+                    <div class="account-meta">
+                        <div class="account-stats">
+                            <div class="stat-item stat-published">
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">已发布</span>
+                            </div>
+                            <div class="stat-item stat-rejected">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">被拒</span>
+                            </div>
+                            <div class="stat-item stat-removed">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">移除</span>
+                            </div>
+                        </div>
+                        <div class="price-tag">￥8000</div>
+                    </div>
                 </div>
                 <div class="account-links">
                     <div class="link-item">
@@ -532,9 +1093,13 @@
             </div>
         </div>
         
-        <footer>
-            <p>页面已适配移动端和桌面端，点击上方按钮可切换深色/浅色主题</p>
-            <p>点击链接或"立即访问"按钮可直接跳转到对应网页</p>
+        <footer {
+            text-align: center;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
         </footer>
     </div>
 
@@ -603,7 +1168,168 @@
                 console.log('URL解析失败:', e);
             }
         });
+        
+        // 新增：统计信息点击效果
+        document.querySelectorAll('.stat-item').forEach(stat => {
+            stat.addEventListener('click', function() {
+                const number = this.querySelector('.stat-number').textContent;
+                const label = this.querySelector('.stat-label').textContent;
+                
+                // 临时改变背景色
+                const originalBg = this.style.backgroundColor;
+                this.style.backgroundColor = '#3498db20';
+                
+                setTimeout(() => {
+                    this.style.backgroundColor = originalBg;
+                }, 300);
+                
+                console.log(`点击了统计项: ${label} - ${number}`);
+            });
+        });
+        
+        // 新增：价格信息点击效果
+        document.querySelectorAll('.price-tag').forEach(priceTag => {
+            priceTag.addEventListener('click', function() {
+                const price = this.textContent;
+                const accountName = this.closest('.account-card').querySelector('.account-name h2').textContent;
+                
+                // 创建价格提示弹窗
+                const pricePopup = document.createElement('div');
+                pricePopup.style.position = 'fixed';
+                pricePopup.style.top = '50%';
+                pricePopup.style.left = '50%';
+                pricePopup.style.transform = 'translate(-50%, -50%)';
+                pricePopup.style.backgroundColor = document.body.classList.contains('dark-theme') ? '#2a2e3e' : 'white';
+                pricePopup.style.padding = '20px';
+                pricePopup.style.borderRadius = '10px';
+                pricePopup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+                pricePopup.style.zIndex = '1000';
+                pricePopup.style.textAlign = 'center';
+                pricePopup.style.border = '2px solid #ff7e5f';
+                pricePopup.style.maxWidth = '300px';
+                pricePopup.style.width = '90%';
+                
+                pricePopup.innerHTML = `
+                    <h3 style="margin-bottom: 10px; color: #ff7e5f;">账号价格详情</h3>
+                    <p style="margin-bottom: 10px; font-size: 1.1rem;">账号：${accountName}</p>
+                    <p style="font-size: 2rem; font-weight: bold; color: #ff7e5f; margin: 15px 0;">${price}</p>
+                    <p style="margin-bottom: 15px; color: #7f8c8d; font-size: 0.9rem;">此价格包含完整的开发者账号权限及所有已发布应用</p>
+                    <button id="closePricePopup" style="background: #3498db; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer;">关闭</button>
+                `;
+                
+                document.body.appendChild(pricePopup);
+                
+                // 关闭弹窗
+                document.getElementById('closePricePopup').addEventListener('click', function() {
+                    document.body.removeChild(pricePopup);
+                });
+                
+                // 点击背景关闭弹窗
+                pricePopup.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        document.body.removeChild(pricePopup);
+                    }
+                });
+                
+                console.log(`点击了价格信息: ${accountName} - ${price}`);
+            });
+        });
+        
+        // 新增：微信二维码功能
+        const wechatQR = document.getElementById('wechatQR');
+        const qrClose = document.getElementById('qrClose');
+        const qrCode = document.getElementById('qrCode');
+        const qrPopup = document.getElementById('qrPopup');
+        const qrPopupClose = document.getElementById('qrPopupClose');
+        const showQRBtn = document.getElementById('showQRBtn');
+        
+        // 关闭二维码区域
+        qrClose.addEventListener('click', function() {
+            wechatQR.style.opacity = '0';
+            wechatQR.style.transform = 'translateX(-20px)';
+            setTimeout(() => {
+                wechatQR.style.display = 'none';
+                // 显示重新显示二维码的按钮
+                showQRBtn.style.display = 'flex';
+                // 保存隐藏状态到localStorage
+                localStorage.setItem('qrHidden', 'true');
+            }, 300);
+        });
+        
+        // 检查是否之前隐藏了二维码
+        const qrHidden = localStorage.getItem('qrHidden');
+        if (qrHidden === 'true') {
+            wechatQR.style.display = 'none';
+            showQRBtn.style.display = 'flex';
+        } else {
+            showQRBtn.style.display = 'none';
+        }
+        
+        // 点击显示二维码按钮
+        showQRBtn.addEventListener('click', function() {
+            wechatQR.style.display = 'flex';
+            // 触发重排以应用动画
+            void wechatQR.offsetWidth;
+            wechatQR.style.opacity = '1';
+            wechatQR.style.transform = 'translateX(0)';
+            
+            // 隐藏显示二维码按钮
+            this.style.display = 'none';
+            
+            // 更新localStorage
+            localStorage.setItem('qrHidden', 'false');
+        });
+        
+        // 点击二维码显示放大弹窗
+        qrCode.addEventListener('click', function() {
+            qrPopup.style.display = 'flex';
+        });
+        
+        // 关闭放大弹窗
+        qrPopupClose.addEventListener('click', function() {
+            qrPopup.style.display = 'none';
+        });
+        
+        // 点击弹窗背景也关闭
+        qrPopup.addEventListener('click', function(e) {
+            if (e.target === this) {
+                qrPopup.style.display = 'none';
+            }
+        });
+        
+        // 添加键盘快捷键 Ctrl+Q 显示/隐藏二维码
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'q') {
+                e.preventDefault();
+                if (wechatQR.style.display === 'none') {
+                    showQRBtn.click();
+                } else {
+                    qrClose.click();
+                }
+            }
+        });
+        
+        // 添加键盘快捷键 Ctrl+P 显示价格详情（当前焦点所在的账号）
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                // 获取当前焦点所在的账号卡片
+                const focusedElement = document.activeElement;
+                const accountCard = focusedElement.closest('.account-card');
+                if (accountCard) {
+                    const priceTag = accountCard.querySelector('.price-tag');
+                    if (priceTag) {
+                        priceTag.click();
+                    }
+                } else {
+                    // 如果没有焦点在卡片内，显示第一个账号的价格详情
+                    const firstPriceTag = document.querySelector('.price-tag');
+                    if (firstPriceTag) {
+                        firstPriceTag.click();
+                    }
+                }
+            }
+        });
     </script>
 </body>
-
 </html>
