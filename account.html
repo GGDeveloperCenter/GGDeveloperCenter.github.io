@@ -170,6 +170,90 @@
             background: #3498db;
         }
         
+        /* 价格信息弹窗 */
+        .price-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeInPopup 0.3s ease;
+        }
+        
+        .price-popup-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+            animation: scaleIn 0.3s ease;
+            border: 2px solid #ff7e5f;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .price-popup h3 {
+            color: #ff7e5f;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .price-popup-account {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        
+        .price-popup-price {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #ff7e5f;
+            margin: 20px 0;
+        }
+        
+        .price-popup-desc {
+            margin-bottom: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .price-popup-close {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        
+        .price-popup-close:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        /* 暗色主题下的价格弹窗 */
+        body.dark-theme .price-popup-content {
+            background: #2a2e3e;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .price-popup-account {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .price-popup-desc {
+            color: #aaa;
+        }
+        
         header {
             text-align: center;
             margin-bottom: 40px;
@@ -333,6 +417,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
         
         .price-tag:hover {
@@ -652,6 +737,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        @keyframes fadeInPopup {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+        
         .account-card {
             animation: fadeIn 0.5s ease forwards;
         }
@@ -660,7 +755,6 @@
         .account-card:nth-child(1) { animation-delay: 0.1s; }
         .account-card:nth-child(2) { animation-delay: 0.2s; }
         .account-card:nth-child(3) { animation-delay: 0.3s; }
-        .account-card:nth-child(4) { animation-delay: 0.4s; }
         
         /* 暗色主题 */
         body.dark-theme {
@@ -791,11 +885,6 @@
             animation: fadeInPopup 0.3s ease;
         }
         
-        @keyframes fadeInPopup {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         .qr-popup-content {
             background: white;
             padding: 20px;
@@ -803,11 +892,6 @@
             text-align: center;
             max-width: 300px;
             animation: scaleIn 0.3s ease;
-        }
-        
-        @keyframes scaleIn {
-            from { transform: scale(0.8); }
-            to { transform: scale(1); }
         }
         
         .qr-popup-img {
@@ -892,6 +976,17 @@
         </div>
     </div>
     
+    <!-- 价格信息弹窗 -->
+    <div class="price-popup" id="pricePopup">
+        <div class="price-popup-content">
+            <h3 id="pricePopupTitle">账号价格详情</h3>
+            <p class="price-popup-account" id="pricePopupAccount"></p>
+            <div class="price-popup-price" id="pricePopupPrice"></div>
+            <p class="price-popup-desc">此价格包含完整的开发者账号权限</p>
+            <button class="price-popup-close" id="pricePopupClose">关闭</button>
+        </div>
+    </div>
+    
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
@@ -899,6 +994,7 @@
     <div class="container">
         <header>
             <h1>账号信息中心</h1>
+            <p class="subtitle">展示Google Play开发者账号及应用状态统计</p>
         </header>
         
         <!-- 修改为单列布局 -->
@@ -925,7 +1021,7 @@
                                 <span class="stat-label">移除</span>
                             </div>
                         </div>
-                        <div class="price-tag">￥8000</div>
+                        <div class="price-tag" data-account="VexelAegis77">￥8000</div>
                     </div>
                 </div>
                 <div class="account-links">
@@ -988,7 +1084,7 @@
                                 <span class="stat-label">移除</span>
                             </div>
                         </div>
-                        <div class="price-tag">￥8000</div>
+                        <div class="price-tag" data-account="PsybilSyndicate">￥8000</div>
                     </div>
                 </div>
                 <div class="account-links">
@@ -1051,7 +1147,7 @@
                                 <span class="stat-label">移除</span>
                             </div>
                         </div>
-                        <div class="price-tag">￥8000</div>
+                        <div class="price-tag" data-account="KymaForge">￥8000</div>
                     </div>
                 </div>
                 <div class="account-links">
@@ -1093,13 +1189,9 @@
             </div>
         </div>
         
-        <footer {
-            text-align: center;
-            padding: 25px;
-            color: #7f8c8d;
-            font-size: 0.95rem;
-            border-top: 1px solid #eee;
-            margin-top: 20px;
+        <footer>
+            <p>页面已适配移动端和桌面端，点击上方按钮可切换深色/浅色主题</p>
+            <p>点击链接或"立即访问"按钮可直接跳转到对应网页</p>
         </footer>
     </div>
 
@@ -1187,52 +1279,38 @@
             });
         });
         
-        // 新增：价格信息点击效果
+        // 新增：价格信息点击效果 - 修复版
+        const pricePopup = document.getElementById('pricePopup');
+        const pricePopupClose = document.getElementById('pricePopupClose');
+        const pricePopupAccount = document.getElementById('pricePopupAccount');
+        const pricePopupPrice = document.getElementById('pricePopupPrice');
+        
         document.querySelectorAll('.price-tag').forEach(priceTag => {
             priceTag.addEventListener('click', function() {
                 const price = this.textContent;
-                const accountName = this.closest('.account-card').querySelector('.account-name h2').textContent;
+                const accountName = this.getAttribute('data-account');
                 
-                // 创建价格提示弹窗
-                const pricePopup = document.createElement('div');
-                pricePopup.style.position = 'fixed';
-                pricePopup.style.top = '50%';
-                pricePopup.style.left = '50%';
-                pricePopup.style.transform = 'translate(-50%, -50%)';
-                pricePopup.style.backgroundColor = document.body.classList.contains('dark-theme') ? '#2a2e3e' : 'white';
-                pricePopup.style.padding = '20px';
-                pricePopup.style.borderRadius = '10px';
-                pricePopup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
-                pricePopup.style.zIndex = '1000';
-                pricePopup.style.textAlign = 'center';
-                pricePopup.style.border = '2px solid #ff7e5f';
-                pricePopup.style.maxWidth = '300px';
-                pricePopup.style.width = '90%';
+                // 更新弹窗内容
+                pricePopupAccount.textContent = `账号：${accountName}`;
+                pricePopupPrice.textContent = price;
                 
-                pricePopup.innerHTML = `
-                    <h3 style="margin-bottom: 10px; color: #ff7e5f;">账号价格详情</h3>
-                    <p style="margin-bottom: 10px; font-size: 1.1rem;">账号：${accountName}</p>
-                    <p style="font-size: 2rem; font-weight: bold; color: #ff7e5f; margin: 15px 0;">${price}</p>
-                    <p style="margin-bottom: 15px; color: #7f8c8d; font-size: 0.9rem;">此价格包含完整的开发者账号权限</p>
-                    <button id="closePricePopup" style="background: #3498db; color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer;">关闭</button>
-                `;
-                
-                document.body.appendChild(pricePopup);
-                
-                // 关闭弹窗
-                document.getElementById('closePricePopup').addEventListener('click', function() {
-                    document.body.removeChild(pricePopup);
-                });
-                
-                // 点击背景关闭弹窗
-                pricePopup.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        document.body.removeChild(pricePopup);
-                    }
-                });
+                // 显示弹窗
+                pricePopup.style.display = 'flex';
                 
                 console.log(`点击了价格信息: ${accountName} - ${price}`);
             });
+        });
+        
+        // 关闭价格弹窗
+        pricePopupClose.addEventListener('click', function() {
+            pricePopup.style.display = 'none';
+        });
+        
+        // 点击弹窗背景也关闭
+        pricePopup.addEventListener('click', function(e) {
+            if (e.target === this) {
+                pricePopup.style.display = 'none';
+            }
         });
         
         // 新增：微信二维码功能
@@ -1330,7 +1408,18 @@
                 }
             }
         });
+        
+        // ESC键关闭所有弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (pricePopup.style.display === 'flex') {
+                    pricePopup.style.display = 'none';
+                }
+                if (qrPopup.style.display === 'flex') {
+                    qrPopup.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>
-
