@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账号信息展示</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 修改为单列布局 */
+        .account-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .account-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 100%;
+        }
+        
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .account-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+        }
+        
+        .account-name {
+            display: flex;
+            align-items: center;
+            margin-bottom: 22px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .account-name i {
+            font-size: 1.8rem;
+            color: #3498db;
+            margin-right: 15px;
+            background: #e8f4fc;
+            padding: 12px;
+            border-radius: 12px;
+        }
+        
+        .account-name h2 {
+            color: #2c3e50;
+            font-size: 1.6rem;
+        }
+        
+        .account-links {
+            flex-grow: 1;
+        }
+        
+        .link-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 14px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .link-item:hover {
+            background-color: #eef7ff;
+            transform: translateX(5px);
+        }
+        
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .link-text {
+            flex-grow: 1;
+        }
+        
+        .link-text a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+        
+        .link-text a:hover {
+            color: #3498db;
+            text-decoration: underline;
+        }
+        
+        .link-desc {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .platform-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #e8f4fc;
+            color: #3498db;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        
+        .link-actions {
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+        
+        .direct-link-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .direct-link-btn:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+        
+        .direct-link-btn i {
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .account-list {
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .account-card {
+                padding: 22px;
+            }
+            
+            .account-name h2 {
+                font-size: 1.4rem;
+            }
+            
+            .link-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .link-icon {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            
+            .link-actions {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            .direct-link-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                margin-bottom: 25px;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+        }
+        
+        /* 添加一些动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .account-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* 为每个卡片设置延迟动画 */
+        .account-card:nth-child(1) { animation-delay: 0.1s; }
+        .account-card:nth-child(2) { animation-delay: 0.2s; }
+        .account-card:nth-child(3) { animation-delay: 0.3s; }
+        .account-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* 暗色主题切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+            background: #3498db;
+        }
+        
+        /* 暗色主题 */
+        body.dark-theme {
+            background: #1a1d28;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .account-card {
+            background: #2a2e3e;
+            color: #e0e0e0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        body.dark-theme .account-name h2 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .account-name {
+            border-bottom-color: #3a3f50;
+        }
+        
+        body.dark-theme .link-item {
+            background-color: #3a3f50;
+        }
+        
+        body.dark-theme .link-item:hover {
+            background-color: #444a5d;
+        }
+        
+        body.dark-theme .link-text a {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .link-desc {
+            color: #aaa;
+        }
+        
+        body.dark-theme footer {
+            color: #aaa;
+            border-top-color: #3a3f50;
+        }
+        
+        body.dark-theme .platform-tag {
+            background: #3a4a5a;
+            color: #7bbfff;
+        }
+        
+        body.dark-theme .subtitle {
+            color: #aaa;
+        }
+        
+        body.dark-theme h1 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .direct-link-btn {
+            background: #27ae60;
+        }
+        
+        body.dark-theme .direct-link-btn:hover {
+            background: #219653;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div class="container">
+        <header>
+            <h1>账号信息中心</h1>
+        </header>
+        
+        <!-- 修改为单列布局 -->
+        <div class="account-list">
+            <!-- 账号1 -->
+            <div class="account-card">
+                <div class="account-name">
+                    <i class="fas fa-user-circle"></i>
+                    <h2>VexelAegis77</h2>
+                </div>
+                <div class="account-links">
+                    <div class="link-item">
+                        <div class="link-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="link-text">
+                            <a href="https://play.google.com/store/apps/details?id=com.VexelAegis77.KtnRmDash" target="_blank">
+                                https://play.google.com/store/apps/details?id=com.VexelAegis77.KtnRmDash
+                            </a>
+                            <div class="link-desc">Google Play应用商店 - 游戏</div>
+                            <span class="platform-tag">Android应用</span>
+                        </div>
+                        <div class="link-actions">
+                            <button class="direct-link-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.VexelAegis77.KtnRmDash', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> 立即访问
+                            </button>
+                        </div>
+                    </div>
+                    <div class="link-item">
+                        <div class="link-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="link-text">
+                            <a href="https://play.google.com/store/apps/details?id=com.VexelAegis77.MagusSrgeSpell" target="_blank">
+                                https://play.google.com/store/apps/details?id=com.VexelAegis77.MagusSrgeSpell
+                            </a>
+                            <div class="link-desc">Google Play应用商店 - 游戏</div>
+                            <span class="platform-tag">Android应用</span>
+                        </div>
+                        <div class="link-actions">
+                            <button class="direct-link-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.VexelAegis77.MagusSrgeSpell', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> 立即访问
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+         <!-- 账号2 -->
+            <div class="account-card">
+                <div class="account-name">
+                    <i class="fas fa-user-circle"></i>
+                    <h2>PsybilSyndicate</h2>
+                </div>
+                <div class="account-links">
+                    <div class="link-item">
+                        <div class="link-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="link-text">
+                            <a href="https://play.google.com/store/apps/details?id=com.PsybilSyndicate.FlyingStationery" target="_blank">
+                                https://play.google.com/store/apps/details?id=com.PsybilSyndicate.FlyingStationery
+                            </a>
+                            <div class="link-desc">Google Play应用商店 - 游戏</div>
+                            <span class="platform-tag">Android应用</span>
+                        </div>
+                        <div class="link-actions">
+                            <button class="direct-link-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.PsybilSyndicate.FlyingStationery', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> 立即访问
+                            </button>
+                        </div>
+                    </div>
+                    <div class="link-item">
+                        <div class="link-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="link-text">
+                            <a href="https://play.google.com/store/apps/details?id=com.PsybilSyndicate.WantedWaltzSK" target="_blank">
+                                https://play.google.com/store/apps/details?id=com.PsybilSyndicate.WantedWaltzSK
+                            </a>
+                            <div class="link-desc">Google Play应用商店 - 游戏</div>
+                            <span class="platform-tag">Android应用</span>
+                        </div>
+                        <div class="link-actions">
+                            <button class="direct-link-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.PsybilSyndicate.WantedWaltzSK', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> 立即访问
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<!-- 账号3 -->
+            <div class="account-card">
+                <div class="account-name">
+                    <i class="fas fa-user-circle"></i>
+                    <h2>KymaForge</h2>
+                </div>
+                <div class="account-links">
+                    <div class="link-item">
+                        <div class="link-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="link-text">
+                            <a href="https://play.google.com/store/apps/details?id=com.KymaForge.TropiFruitSlicr" target="_blank">
+                                https://play.google.com/store/apps/details?id=com.KymaForge.TropiFruitSlicr
+                            </a>
+                            <div class="link-desc">Google Play应用商店 - 游戏</div>
+                            <span class="platform-tag">Android应用</span>
+                        </div>
+                        <div class="link-actions">
+                            <button class="direct-link-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.KymaForge.TropiFruitSlicr', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> 立即访问
+                            </button>
+                        </div>
+                    </div>
+                    <div class="link-item">
+                        <div class="link-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="link-text">
+                            <a href="https://play.google.com/store/apps/details?id=com.KymaForge.NstGrdian" target="_blank">
+                                https://play.google.com/store/apps/details?id=com.KymaForge.NstGrdian
+                            </a>
+                            <div class="link-desc">Google Play应用商店 - 游戏</div>
+                            <span class="platform-tag">Android应用</span>
+                        </div>
+                        <div class="link-actions">
+                            <button class="direct-link-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.KymaForge.NstGrdian', '_blank')">
+                                <i class="fas fa-external-link-alt"></i> 立即访问
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>页面已适配移动端和桌面端，点击上方按钮可切换深色/浅色主题</p>
+            <p>点击链接或"立即访问"按钮可直接跳转到对应网页</p>
+        </footer>
+    </div>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // 检查用户之前是否选择了暗色主题
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // 为所有链接添加点击反馈
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                this.style.color = '#3498db';
+                setTimeout(() => {
+                    this.style.color = '';
+                }, 300);
+            });
+        });
+        
+        // 为所有直接访问按钮添加点击反馈
+        document.querySelectorAll('.direct-link-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 跳转中...';
+                this.style.background = '#3498db';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.style.background = '';
+                }, 1000);
+            });
+        });
+        
+        // 简化链接显示
+        document.querySelectorAll('.link-text a').forEach(link => {
+            const originalUrl = link.textContent;
+            // 提取域名和关键部分显示
+            try {
+                const url = new URL(originalUrl);
+                let displayText = url.hostname + url.pathname;
+                if (displayText.length > 60) {
+                    displayText = displayText.substring(0, 60) + '...';
+                }
+                link.textContent = displayText;
+                link.title = originalUrl; // 鼠标悬停显示完整URL
+            } catch(e) {
+                // 如果URL解析失败，保持原样
+                console.log('URL解析失败:', e);
+            }
+        });
+    </script>
+</body>
+</html>
